@@ -1,0 +1,23 @@
+nav {
+  display: grid;
+  grid-template-columns: 5rem auto 5rem;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.203);
+  .block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    img {
+      cursor: pointer;
+      height: 3rem;
+    }
+  }
+
+
+
+
+}

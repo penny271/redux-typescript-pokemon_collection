@@ -1,0 +1,16 @@
+// Reset css のように使用 + プロジェクト全体のスタイルを設定
+
+// google fonts
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,700;1,9..40,400&family=Montserrat:wght@700&family=Raleway:wght@100;200;300;400;500;700&display=swap');
+
+
+body {
+  background-color: black;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Raleway', sans-serif;
+}
