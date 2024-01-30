@@ -1,58 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React from 'react'
+import Navbar from './sections/Navbar'
+import Wrapper from './sections/Wrapper'
+import Footer from './sections/Footer'
+import Background from './components/Background'
+import './scss/index.scss'
+// ルートを設定
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import Search from './pages/Search'
+import MyList from './pages/MyList'
+import About from './pages/About'
+import Compare from './pages/Compare'
+import Pokemon from './pages/Pokemon'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div className='main-container'>
+      <Background />
+      {/* ルートを設定 */}
+      <BrowserRouter>
+        <div className="app">
+          <Navbar />
+          <Routes>
+            {/* pathに設定された url の場所に合致したときのみ、 componentが表示される */}
+            <Route element={<Search/>} path="/search" />
+            <Route element={<MyList/>} path="/list" />
+            <Route element={<About/>} path="/about" />
+            <Route element={<Compare/>} path="/compare" />
+            <Route element={<Pokemon />} path="/pokemon/:id" />
+            {/* default route 上記のどれにもマッチしない場合 */}
+            <Route element={<Navigate to="/pokemon/1"/>} path="*" />
+          </Routes>
+          {/* 高階コンポーネント にするため Wrapperを コメントアウト */}
+          {/* 上記のルートの各コンポーネントを Wrapperを通じて表示する */}
+          {/* <Wrapper /> */}
+          <Footer />
+        </div>
+      </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
