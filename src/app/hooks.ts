@@ -1,3 +1,5 @@
+// 本ファイルはredux toolkitで自動で作成されている
+
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import type { RootState, AppDispatch } from './store';
 
