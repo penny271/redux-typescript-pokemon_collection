@@ -1,8 +1,12 @@
+// src/pages/Search.tsx
+
 // rfce
 import React, { useEffect } from 'react'
 import Wrapper from '../sections/Wrapper';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { getInitialPokemonData } from '../app/reducers/getInitialPokemonData';
+import { getPokemonData } from '../app/reducers/getPokemonData';
+import PokemonCardGrid from '../components/PokemonCardGrid';
 
 function Search() {
   const dispatch = useAppDispatch();
@@ -26,14 +30,37 @@ function Search() {
   // const pokemonState = useAppSelector((state) => state.pokemon);
   // const allPokemon = pokemonState.allPokemon;
   // - 上記と同じ
-  const { allPokemon } = useAppSelector(({pokemon}) => pokemon)
+  const { allPokemon, randomPokemons } = useAppSelector(({pokemon}) => pokemon)
 
   useEffect(() => {
     // pokeApiからポケモン情報を取得する
     dispatch(getInitialPokemonData());
   }, [dispatch])
+
+  // ランダムにポケモンのデータを20要素まで取得する
+  useEffect(() => {
+    if (allPokemon) {
+      // shallow copyする .sort()は直接結果を書き換えるため
+      const clonePokemons = [...allPokemon];
+      const randomPokemonsId = clonePokemons
+        .sort(() => Math.random() - Math.random())
+        .slice(0, 20);
+      console.log('randomPokemonsId :>> ', randomPokemonsId);
+      // アクションをディスパッチする 実際にこのアクションをReduxストアに送り、
+      // 状態更新をトリガーするには、
+      // dispatch(getPokemonData(randomPokemonsId))を使います。
+      dispatch(getPokemonData(randomPokemonsId));
+    }
+  }, [allPokemon, dispatch])
+
   return (
-    <div>Search</div>
+    <>
+      <div className="search">
+        <input type="text" name="" id="" />
+        {/* TypeScriptでは、!post-fix式を変数や式の後に使うと、非NULLのアサーション演算子になる。これはTypeScriptに対して、たとえ型チェックでそうでないことが示唆されたとしても、その値が間違いなくnullでもundefinedでもないことを示すものである。 */}
+        <PokemonCardGrid pokemons={randomPokemons!} />
+      </div>
+    </>
   )
 }
 

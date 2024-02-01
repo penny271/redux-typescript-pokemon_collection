@@ -3,6 +3,9 @@ import { pokemonRoute } from "../../utils/Constants";
 import axios from "axios";
 
 // pokeApiでポケモンのデータを取ってくる
+// - createAsyncThunk 非同期処理に使用する
+// 第一引数: アクションタイプの接頭辞(直接は使わない)
+// 第二引数: Payload Creator Function(非同期処理を書く)
 export const getInitialPokemonData = createAsyncThunk(
   "pokemon/initialData",
   async () => {

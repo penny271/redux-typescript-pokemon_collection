@@ -1,11 +1,15 @@
+// src/app/slices/pokemonSlice.ts
+
 import { createSlice } from "@reduxjs/toolkit";
 // 自作の型ファイル
 import { PokemonTypeInitialState } from "../../utils/Types";
 import { getInitialPokemonData } from "../reducers/getInitialPokemonData";
+import { getPokemonData } from "../reducers/getPokemonData";
 
 // type が PokemonTypeInitialState(typeScript)
 const initialState: PokemonTypeInitialState = {
   allPokemon: undefined,
+  randomPokemons: undefined,
 };
 
 // sliceを作成
@@ -19,6 +23,9 @@ export const PokemonSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getInitialPokemonData.fulfilled, (state, action) => {
       state.allPokemon = action.payload;
+    });
+    builder.addCase(getPokemonData.fulfilled, (state, action) => {
+      state.randomPokemons = action.payload;
     })
   }
 });
