@@ -22,6 +22,7 @@ export const PokemonSlice = createSlice({
   // - 具体的には、非同期アクション（getInitialPokemonData.fulfilled）の結果を処理し、そのアクションのペイロードに基づいてスライスの状態を更新します。
   extraReducers: (builder) => {
     builder.addCase(getInitialPokemonData.fulfilled, (state, action) => {
+      // * getInitialPokemonData の returnされた値が action.payloadに入る
       state.allPokemon = action.payload;
     });
     builder.addCase(getPokemonData.fulfilled, (state, action) => {

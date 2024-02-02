@@ -5,7 +5,7 @@
   height: 100vh;
 }
 
-// grid-template-rows: 10vh auto 10vh; により,
+// grid-template-rows: 10vh auto 10vh;  により,
 // Navbar 10vh
 // Wrapper 80vh
 // Footer 10vh
@@ -26,5 +26,13 @@
     border-top: none;
     border-bottom: none;
     height: 80vh;
+  }
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0.4rem;
+  &-thumb {
+    background-color: rgba(219, 219, 219, 0.557);
   }
 }

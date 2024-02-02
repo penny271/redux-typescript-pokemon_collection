@@ -1,3 +1,5 @@
+// Types.ts
+
 export interface AppTypeInitialState { }
 
 export interface PokemonTypeInitialState {
@@ -19,7 +21,7 @@ export interface generatedPokemonType {
 }
 export interface pokemonTypeInterface {
   [key: string]: {
-    image: string[];
+    image: string;
     resistance: string[];
     strength: string[];
     weakness: string[];

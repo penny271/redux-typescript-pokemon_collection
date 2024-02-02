@@ -53,10 +53,32 @@ function Search() {
     }
   }, [allPokemon, dispatch])
 
+  // サーチでポケポンを取得、表示する
+  // * async は 後続のコードで awaitを使わないのであれば不要
+  const getPokemon = async (value: string) => {
+    if (value.length) {
+      const pokemons = allPokemon?.filter((pokemon) =>
+        pokemon.name.includes(value.toLowerCase())
+      );
+      dispatch(getPokemonData(pokemons!));
+    } else {
+      const clonePokemons = [...(allPokemon as [])];
+      const randomPokemonsId = clonePokemons
+        .sort(() => Math.random() - Math.random())
+        .slice(0, 20);
+        dispatch(getPokemonData(randomPokemonsId))
+    }
+  }
+
   return (
     <>
       <div className="search">
-        <input type="text" name="" id="" />
+        <input
+          type="text"
+          className='pokemon-searchbar'
+          placeholder='Search Pokemon'
+          onChange={(e) => getPokemon(e.target.value)}
+        />
         {/* TypeScriptでは、!post-fix式を変数や式の後に使うと、非NULLのアサーション演算子になる。これはTypeScriptに対して、たとえ型チェックでそうでないことが示唆されたとしても、その値が間違いなくnullでもundefinedでもないことを示すものである。 */}
         <PokemonCardGrid pokemons={randomPokemons!} />
       </div>
