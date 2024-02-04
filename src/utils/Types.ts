@@ -37,3 +37,9 @@ export interface userPokemonsType extends generatedPokemonType {
   // オプショナルで必須ではない
   firebaseId?: string;
 }
+
+export type pokemonStatType =
+  "vulnerable"
+  | "weakness"
+  | "strength"
+  | "resistance";
