@@ -1,3 +1,5 @@
+// src/app/store.ts
+
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { AppSlice } from './slices/AppSlice';
 import { PokemonSlice } from './slices/pokemonSlice';
@@ -20,3 +22,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+

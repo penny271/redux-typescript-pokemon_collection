@@ -7,6 +7,7 @@ import { AppTypeInitialState } from "../../utils/Types";
 // type が AppTypeInitialState(typeScript)
 const initialState: AppTypeInitialState = {
   toasts: [],
+  userInfo: undefined,
 };
 
 // sliceを作成
@@ -22,9 +23,13 @@ export const AppSlice = createSlice({
     clearToasts: (state) => {
       state.toasts = [];
     },
+    // firebase firestore利用
+    setUserStatus: (state, action) => {
+      state.userInfo = action.payload;
+    }
   },
 });
 
 // actions(reducer) を export
 // Typically, if you had defined reducers, Redux Toolkit would automatically generate corresponding actions, which you could then destructure and export for use elsewhere in your application.
-export const { setToast, clearToasts } = AppSlice.actions;
+export const { setToast, clearToasts, setUserStatus } = AppSlice.actions;
