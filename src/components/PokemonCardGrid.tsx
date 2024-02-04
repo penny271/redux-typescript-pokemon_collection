@@ -6,12 +6,16 @@ import { pokemonTypeInterface, userPokemonsType } from '../utils/Types'
 import {IoGitCompare} from 'react-icons/io5'
 import {FaPlus, FaTrash} from 'react-icons/fa'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../app/hooks'
+import { addToCompare } from '../app/slices/pokemonSlice'
+import { setToast } from '../app/slices/AppSlice'
 
 // function PokemonCardGrid(props: { pokemons: userPokemonsType[] }) {
 // 分割代入で直接pokemonsプロパティにアクセスできるようにしている
 function PokemonCardGrid({ pokemons }: { pokemons: userPokemonsType[] }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="pokemon-card-grid-container">
@@ -30,7 +34,14 @@ function PokemonCardGrid({ pokemons }: { pokemons: userPokemonsType[] }) {
                     <FaTrash className="trash" />
                   )}
                 </div>
-                <div className="pokemon-card-compare"><IoGitCompare/></div>
+                <div className="pokemon-card-compare">
+                  <IoGitCompare onClick={() => {
+                    // state.comparedQueue を更新
+                    dispatch(addToCompare(data))
+                    // state.toasts を更新
+                    dispatch(setToast(`${data.name} has been added to Compare Queue.`))
+                  }} />
+                </div>
                 <h3 className="pokemon-card-title">{data.name}</h3>
                 {/* POKEMON詳細ページへ移動 */}
                 <img

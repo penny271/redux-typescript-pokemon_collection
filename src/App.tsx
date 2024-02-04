@@ -1,18 +1,49 @@
-import React from 'react'
-import Navbar from './sections/Navbar'
-import Wrapper from './sections/Wrapper'
-import Footer from './sections/Footer'
-import Background from './components/Background'
-import './scss/index.scss'
+// src/App.tsx
+
+import React, { useEffect } from 'react';
+import Navbar from './sections/Navbar';
+import Wrapper from './sections/Wrapper';
+import Footer from './sections/Footer';
+import Background from './components/Background';
+import './scss/index.scss';
 // ルートを設定
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import Search from './pages/Search'
-import MyList from './pages/MyList'
-import About from './pages/About'
-import Compare from './pages/Compare'
-import Pokemon from './pages/Pokemon'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Search from './pages/Search';
+import MyList from './pages/MyList';
+import About from './pages/About';
+import Compare from './pages/Compare';
+import Pokemon from './pages/Pokemon';
+// toastの設定 (project作成時に toastify を入れている)
+import { ToastContainer, ToastOptions, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { clearToasts } from './app/slices/AppSlice';
 
 function App() {
+  // useAppSelector is a typed version of the useSelector hook for Redux Toolkit applications using TypeScript.
+  // It allows you to select data from the Redux store while leveraging TypeScript's type safety.
+  //* const { toasts } = useAppSelector((state) => state.app);
+  const { toasts } = useAppSelector(({ app }) => app);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (toasts.length) {
+      // toastify style 変更
+      const toastOptions: ToastOptions = {
+        position: "bottom-right",
+        autoClose: 2000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      }
+      toasts.forEach((message: string) => {
+        toast(message, toastOptions);
+      })
+      // state.toasts を 空 []にする - そうしないとtoastが積み重なっていくため
+      dispatch(clearToasts());
+    }
+  })
+
   return (
     <div className='main-container'>
       <Background />
@@ -34,6 +65,7 @@ function App() {
           {/* 上記のルートの各コンポーネントを Wrapperを通じて表示する */}
           {/* <Wrapper /> */}
           <Footer />
+          <ToastContainer />
         </div>
       </BrowserRouter>
     </div>

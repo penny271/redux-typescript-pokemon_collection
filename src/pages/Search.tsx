@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { getInitialPokemonData } from '../app/reducers/getInitialPokemonData';
 import { getPokemonData } from '../app/reducers/getPokemonData';
 import PokemonCardGrid from '../components/PokemonCardGrid';
+import { debounce } from '../utils/Debounce';
 
 function Search() {
   const dispatch = useAppDispatch();
@@ -53,14 +54,22 @@ function Search() {
     }
   }, [allPokemon, dispatch])
 
-  // サーチでポケポンを取得、表示する
+  // debounce処理 ポケモンサーチバーのリアルタイム検索のapi発行数を削減させるため
+  // * e.target.value が debounce関数発火後の return(...args:any) => {} に渡される
+  // 初回呼び出しでinitialized - decounce()の中の return の関数を 変数handleChangeが保持
+  // closureを作成
+  const handleChange = debounce((value: string) => getPokemon(value), 300);
+
+  // サーチで特定のポケモンを取得、表示する
   // * async は 後続のコードで awaitを使わないのであれば不要
   const getPokemon = async (value: string) => {
+    // サーチバーでサーチした場合
     if (value.length) {
       const pokemons = allPokemon?.filter((pokemon) =>
         pokemon.name.includes(value.toLowerCase())
       );
       dispatch(getPokemonData(pokemons!));
+    // サーチバーが殻になった場合、ランダムに20枚取得する
     } else {
       const clonePokemons = [...(allPokemon as [])];
       const randomPokemonsId = clonePokemons
@@ -77,8 +86,10 @@ function Search() {
           type="text"
           className='pokemon-searchbar'
           placeholder='Search Pokemon'
-          onChange={(e) => getPokemon(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
         />
+        {/* onChange={(e) => getPokemon(e.target.value)} */}
+
         {/* TypeScriptでは、!post-fix式を変数や式の後に使うと、非NULLのアサーション演算子になる。これはTypeScriptに対して、たとえ型チェックでそうでないことが示唆されたとしても、その値が間違いなくnullでもundefinedでもないことを示すものである。 */}
         <PokemonCardGrid pokemons={randomPokemons!} />
       </div>
