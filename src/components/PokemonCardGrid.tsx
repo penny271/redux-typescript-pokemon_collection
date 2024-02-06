@@ -9,6 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../app/hooks'
 import { addToCompare } from '../app/slices/pokemonSlice'
 import { setToast } from '../app/slices/AppSlice'
+import { addPokemonToList } from '../app/reducers/addPokemonToList'
+import { removePokemon } from '../app/reducers/removePokemonFromUserList'
 
 // function PokemonCardGrid(props: { pokemons: userPokemonsType[] }) {
 // 分割代入で直接pokemonsプロパティにアクセスできるようにしている
@@ -23,15 +25,24 @@ function PokemonCardGrid({ pokemons }: { pokemons: userPokemonsType[] }) {
         {pokemons &&
           pokemons.length > 0 &&
           pokemons?.map((data: userPokemonsType) => {
-            console.log('data-grid :>> ', data);
+            // console.log('data-grid :>> ', data);
             return (
               <div className="pokemon-card" key={data.id}>
                 {/* 上部のボタン */}
                 <div className="pokemon-card-list">
                   {location.pathname.includes("/pokemon") || location.pathname.includes("/search") ? (
-                    <FaPlus className="plus" />
+                    <FaPlus
+                      className="plus"
+                      onClick={() => dispatch(addPokemonToList(data))}
+                    />
                   ) : (
-                    <FaTrash className="trash" />
+                    <FaTrash
+                      className="trash"
+                      onClick={async () => {
+                        await dispatch(removePokemon({ id: data.firebaseId! }))
+                        dispatch(setToast("Pokemon removed successfully."))
+                      }}
+                    />
                   )}
                 </div>
                 <div className="pokemon-card-compare">
@@ -54,7 +65,7 @@ function PokemonCardGrid({ pokemons }: { pokemons: userPokemonsType[] }) {
                 <div className="pokemon-card-types">
                   {data.types.map((type: pokemonTypeInterface, index: number) => {
                     const keys = Object.keys(type);
-                    console.log('keys :>> ', keys); // keys :>>  ['dragon']
+                    // console.log('keys :>> ', keys); // keys :>>  ['dragon']
                     return (
                       <div className="pokemon-card-types-type" key={index}>
                         <img

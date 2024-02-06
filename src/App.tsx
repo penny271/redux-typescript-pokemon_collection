@@ -17,7 +17,9 @@ import Pokemon from './pages/Pokemon';
 import { ToastContainer, ToastOptions, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { clearToasts } from './app/slices/AppSlice';
+import { clearToasts, setUserStatus } from './app/slices/AppSlice';
+import { onAuthStateChanged } from 'firebase/auth';
+import { firebaseAuth } from './utils/FirebaseConfig';
 
 function App() {
   // useAppSelector is a typed version of the useSelector hook for Redux Toolkit applications using TypeScript.
@@ -25,6 +27,17 @@ function App() {
   //* const { toasts } = useAppSelector((state) => state.app);
   const { toasts } = useAppSelector(({ app }) => app);
   const dispatch = useAppDispatch();
+
+  // ユーザーがログインしている場合、その値を state.userInfo に設定する
+  // => ユーザーがログインしているかどうかを判別できるようになる
+  useEffect(() => {
+    onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        dispatch(setUserStatus({email: currentUser.email}))
+      }
+    })
+  }, [dispatch])
+
 
   useEffect(() => {
     if (toasts.length) {
@@ -42,7 +55,7 @@ function App() {
       // state.toasts を 空 []にする - そうしないとtoastが積み重なっていくため
       dispatch(clearToasts());
     }
-  })
+  }, [toasts])
 
   return (
     <div className='main-container'>

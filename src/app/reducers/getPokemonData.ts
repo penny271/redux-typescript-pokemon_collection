@@ -35,7 +35,7 @@ export const getPokemonData = createAsyncThunk(
           })
         );
 
-        console.log('types :>> ', types);
+        // console.log('types :>> ', types);
 
         // @ts-expect-error
         let image: string = images[data.id]
@@ -53,8 +53,8 @@ export const getPokemonData = createAsyncThunk(
           })
         }
       }
-      console.log('{pokemonData} :>> ', {pokemonData});
-      console.log({ pokemons }, "from reducer");
+      // console.log('{pokemonData} :>> ', {pokemonData});
+      // console.log({ pokemons }, "from reducer");
       return pokemonData;
     } catch (err) {
       console.log(err);

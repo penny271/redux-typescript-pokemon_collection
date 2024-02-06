@@ -10,6 +10,7 @@ export interface PokemonTypeInitialState {
   allPokemon: undefined | genericPokemonType[];
   randomPokemons: undefined | generatedPokemonType[];
   comparedQueue: generatedPokemonType[];
+  userPokemons: userPokemonsType[];
 }
 
 export interface genericPokemonType {
@@ -39,8 +40,15 @@ export interface userPokemonsType extends generatedPokemonType {
   firebaseId?: string;
 }
 
+// 固定の文字列を型に指定している
+// - Use type when you need more flexibility or when defining unions, intersections, primitives, or tuples.
 export type pokemonStatType =
   "vulnerable"
   | "weakness"
   | "strength"
   | "resistance";
+
+export interface pokemonStatsType {
+  name: string;
+  value: string
+}

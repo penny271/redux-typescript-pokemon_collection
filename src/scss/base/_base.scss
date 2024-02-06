@@ -14,3 +14,11 @@ body {
   box-sizing: border-box;
   font-family: 'Raleway', sans-serif;
 }
+
+#root {
+  $accent-color: #f51313;
+  --accent-color-dark: color.scale($accent-color, $lightness: -30%);
+}
+
+:root {
+}

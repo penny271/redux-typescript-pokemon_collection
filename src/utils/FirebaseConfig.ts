@@ -22,5 +22,6 @@ const app = initializeApp(firebaseConfig);
 export const firebaseAuth = getAuth(app);
 export const firebaseDB = getFirestore(app);
 
+// firebaseのコレクション(mySqlのテーブルのようなもの)
 export const userRef = collection(firebaseDB, "users");
 export const pokemonListRef = collection(firebaseDB, "pokemonList");

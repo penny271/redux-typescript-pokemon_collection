@@ -8,6 +8,7 @@ import { FaPlus } from 'react-icons/fa';
 import { pokemonTypes } from '../utils/getPokemonTypes';
 import { removeFromCompare } from '../app/slices/pokemonSlice';
 import { useNavigate } from 'react-router-dom';
+import { addPokemonToList } from '../app/reducers/addPokemonToList';
 
 
 // propsを引数に受け取る
@@ -163,15 +164,24 @@ function CompareContainer({
           </div>
         </div>
         <div className="compare-action-buttons">
-          <button className="compare-btn" >Add</button>
-          <button className="compare-btn"
+          <button
+            className="compare-btn"
+            onClick={()=> dispatch(addPokemonToList(pokemon))}
+          >
+            Add
+          </button>
+          <button
+            className="compare-btn"
             onClick={() => navigate(`/pokemon/${pokemon.id}`)}
           >
             View
           </button>
           {/* {id:pokemon.id} は dispatch先で action.payload として使われる*/}
           {/* compareから比較対象となっているポケモンを削除する */}
-          <button className="compare-btn" onClick={()=> dispatch(removeFromCompare({id:pokemon.id}))}>Remove</button>
+          <button
+            className="compare-btn"
+            onClick={() => dispatch(removeFromCompare({ id: pokemon.id }))}>Remove
+          </button>
         </div>
       </div>
     )
