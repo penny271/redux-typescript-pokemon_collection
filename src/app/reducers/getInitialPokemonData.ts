@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { pokemonRoute } from "../../utils/Constants";
+import { pokemonsRoute } from "../../utils/Constants";
 import axios from "axios";
 
 // pokeApiでポケモンのデータを取ってくる
@@ -11,7 +11,7 @@ export const getInitialPokemonData = createAsyncThunk(
   async () => {
     try {
       // 分割代入
-      const { data } = await axios.get(pokemonRoute);
+      const { data } = await axios.get(pokemonsRoute);
       console.log('{data} :>> ', { data });
       // data: {count: 1302, next: null, previous: null, results: Array(1302)}
       return data.results;

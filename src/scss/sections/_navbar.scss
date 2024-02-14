@@ -62,7 +62,8 @@ nav {
     width: 20%;
     height: calc(4px /2 );
 
-    background-color: white;
+    // background-color: white;
+    background-color: var(--accent-color);
     pointer-events: none;
     // transition: transform var(--transition-duration) ease-in-out;
 
