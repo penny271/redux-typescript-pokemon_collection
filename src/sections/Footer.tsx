@@ -2,15 +2,17 @@
 
 import React from 'react'
 import {MdOutlinePowerSettingsNew} from 'react-icons/md'
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { firebaseAuth } from '../utils/FirebaseConfig';
 import { signOut } from 'firebase/auth';
-import { setToast, setUserStatus } from '../app/slices/AppSlice';
+import { setToast, setUserStatus, setPokemonTab } from '../app/slices/AppSlice';
 import { pokemonTabs } from '../utils/Constants';
 import { useLocation } from 'react-router-dom';
 
 function Footer() {
   const dispatch = useAppDispatch();
+  // 現在のタブの状態を取り出す
+  const {currentPokemonTab} = useAppSelector(({app}) => app)
   const location = useLocation();
   // ログアウト処理
   const handleLogout = () => {
@@ -39,7 +41,6 @@ const routes = [
     },
   ];
 
-
   return (
     <footer>
       <div className="block"></div>
@@ -51,7 +52,13 @@ const routes = [
           <ul>
             {routes.map((route) => {
               return (
-                <li key={route.name} className="" onClick={() => {}}>
+                //* タブの状態によって動的にclassNameを変える
+                <li
+                  key={route.name}
+                  className={ `${currentPokemonTab === route.name ? 'active' : ''}`}
+                  onClick={() => {
+                  dispatch(setPokemonTab(route.name));
+                }}>
                   {route.value}
                 </li>
               )

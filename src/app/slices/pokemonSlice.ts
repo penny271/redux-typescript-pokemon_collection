@@ -14,6 +14,7 @@ const initialState: PokemonTypeInitialState = {
   randomPokemons: undefined,
   comparedQueue: [],
   userPokemons: [],
+  currentPokemon: undefined,
 };
 
 // sliceを作成
@@ -43,6 +44,10 @@ export const PokemonSlice = createSlice({
       // index目から 1つ削除
       queue.splice(index, 1);
       state.comparedQueue = queue;
+    },
+    // 現在選択されているポケモン情報を管理する
+    setCurrentPokemon: (state, action) => {
+      state.currentPokemon = action.payload;
     }
   },
   // PokemonSliceのextraReducersは、スライス自身のreducersの一部ではないアクションを処理するために使われます。
@@ -72,4 +77,4 @@ export const PokemonSlice = createSlice({
 
 // actions(reducer) を export
 // Typically, if you had defined reducers, Redux Toolkit would automatically generate corresponding actions, which you could then destructure and export for use elsewhere in your application.
-export const { addToCompare, removeFromCompare } = PokemonSlice.actions;
+export const { addToCompare, removeFromCompare, setCurrentPokemon } = PokemonSlice.actions;

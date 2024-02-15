@@ -15,6 +15,11 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
+.page {
+  height: 100%;
+  width: 100%;
+}
+
 #root {
   $accent-color: #f51313;
   --accent-color-dark: color.scale($accent-color, $lightness: -30%);

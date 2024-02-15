@@ -3,11 +3,16 @@
 import React, { useEffect, useCallback } from "react";
 import Wrapper from "../sections/Wrapper";
 import { useParams } from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import axios from "axios";
-import { pokemonRoute, pokemonSpeciesRoute } from "../utils/Constants";
+import { pokemonRoute, pokemonSpeciesRoute, pokemonTabs } from "../utils/Constants";
 import { defaultImages, images } from "../utils/getPokemonImages";
 import { extractColors } from "extract-colors";
+import Description from "./PokemonPages/Description";
+import Evolution from "./PokemonPages/Evolution";
+import CapableMoves from "./PokemonPages/CapableMoves";
+import Location from "./PokemonPages/Location";
+import { setCurrentPokemon } from "../app/slices/pokemonSlice";
 
 function Pokemon() {
   // 現在のページのurl にアクセスできるようになる
@@ -15,6 +20,8 @@ function Pokemon() {
   // App.tsx <Route element={<Pokemon />} path="/pokemon/:id" />
   const params = useParams();
   const dispatch = useAppDispatch();
+  // 現在のタブの状態を取り出す
+  const {currentPokemonTab} = useAppSelector(({app}) => app)
 
   // useCallbackの空の依存配列[]は、関数がコンポーネントのスコープから外部の値に依存しないという仮定の下で、コンポーネントのすべてのレンダリングにわたって、関数インスタンスを安定して変更しないようにReactに信号を送ります。これは、特に高度な計算や子コンポーネントに渡される関数のパフォーマンスを最適化するのに役立ちます。
   const getRecursiveEvolution: any = useCallback(
@@ -57,7 +64,6 @@ function Pokemon() {
     [getRecursiveEvolution]
   );
 
-
   const getPokemonInfo = useCallback(
     // ポケモンの生息地をapiで取得
     async (image: string) => {
@@ -99,6 +105,32 @@ function Pokemon() {
       // 例: pokemon: {name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/'}
         ({ pokemon }) => pokemon.name === data.name
       ).level;
+      // 選択中のポケモン情報を更新する
+      dispatch(setCurrentPokemon({
+        id: data.id,
+        name: data.name,
+        types: data.types.map(
+          ({ type: { name } }: { type: { name: string } }) => name
+        ),
+        image,
+        stats: data.stats.map(
+          ({
+            stat,
+            base_stat,
+          }: {
+            stat: { name: string };
+            base_stat: number;
+          }) => ({
+            name: stat.name,
+            value: base_stat,
+          })
+        ),
+        encounters,
+        evolutionLevel,
+        evolution,
+        pokemonAbilities,
+      }));
+
       console.log('POKEMONページのPOKEMONデータ:', {
         id: data.id,
         name: data.name,
@@ -124,7 +156,7 @@ function Pokemon() {
         pokemonAbilities,
       });
     },
-    [getEvolutionData, params.id]
+    [getEvolutionData, params.id, dispatch]
   );
 
   useEffect(() => {
@@ -161,7 +193,15 @@ function Pokemon() {
     getPokemonInfo(imageElemet.src);
   }, [params, getPokemonInfo]);
 
-  return <div>Pokemon</div>;
+  return (
+    <div>
+      {/* 現在のタブの状態によって表示させるcomponentを変える */}
+      {currentPokemonTab === pokemonTabs.description && <Description />}
+      {currentPokemonTab === pokemonTabs.evolution && <Evolution />}
+      {currentPokemonTab === pokemonTabs.moves && <CapableMoves />}
+      {currentPokemonTab === pokemonTabs.locations && <Location />}
+    </div>
+  );
 }
 
 export default Wrapper(Pokemon);
