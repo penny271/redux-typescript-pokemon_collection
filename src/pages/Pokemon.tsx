@@ -160,13 +160,13 @@ function Pokemon() {
   );
 
   useEffect(() => {
-    const imageElemet = document.createElement("img");
+    const imageElement = document.createElement("img");
     // @ts-ignore
     // * params = useParams()で paramsを使用可能にしている
-    imageElemet.src = images[params.id];
-    if (!imageElemet.src) {
+    imageElement.src = images[params.id];
+    if (!imageElement.src) {
       // @ts-ignore
-      imageElemet.src = defaultImages[params.id];
+      imageElement.src = defaultImages[params.id];
     }
 
     // ライブラリ extractColors のオプション
@@ -183,14 +183,14 @@ function Pokemon() {
 
     const getColor = async () => {
       // ライブラリ yarn add extract-colors
-      const color = await extractColors(imageElemet.src, options);
+      const color = await extractColors(imageElement.src, options);
       const root = document.documentElement;
       // POKEMONページで一番広範囲で使われている色を --accent-colorとする
       root.style.setProperty("--accent-color", color[0].hex.split('"')[0]);
     };
     getColor();
 
-    getPokemonInfo(imageElemet.src);
+    getPokemonInfo(imageElement.src);
   }, [params, getPokemonInfo]);
 
   return (

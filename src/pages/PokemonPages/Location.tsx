@@ -4,8 +4,9 @@ import React from 'react'
 import { useAppSelector } from '../../app/hooks'
 
 function Location() {
+  // nested destructuring で currentPokemonを取得し、新しい変数に入れ直すことで
+  // 変数名を変更している
   const pokemonData = useAppSelector(
-    // nested destructuring で currentPokemonを取得
     ({ pokemon: { currentPokemon } }) => currentPokemon
   );
 
